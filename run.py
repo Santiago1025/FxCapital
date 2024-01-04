@@ -57,7 +57,7 @@ def ParseSignal(signal: str) -> dict:
     trade = {}
     
     # extracts symbol from trade signal
-    trade['Symbol'] = (signal[0][1:]).upper()
+    trade['Symbol'] = (signal[0].split()[0]).upper()
     
     # checks if the symbol is valid, if not, returns an empty dictionary
     if(trade['Symbol'] not in SYMBOLS):
@@ -76,10 +76,10 @@ def ParseSignal(signal: str) -> dict:
     elif('Sell Stop'.lower() in signal[0].lower()):
          trade['OrderType'] = 'Sell Stop'
 
-    elif('Buy'.lower() in signal[1].lower()):
+    elif('Buy'.lower() in signal[0].split()[1].lower()):
         trade['OrderType'] = 'Buy'
     
-    elif('Sell'.lower() in signal[1].lower()):
+    elif('Sell'.lower() in signal[0].split()[1].lower()):
         trade['OrderType'] = 'Sell'
     
     # returns an empty dictionary if an invalid order type was given
@@ -94,7 +94,7 @@ def ParseSignal(signal: str) -> dict:
         trade['Entry'] = 'NOW'
     
     
-    trade['TP'] = [float((signal[5].split())[-1])]
+    trade['TP'] = [float((signal[4].split())[-1])]
 
     # # checks if there's a fourth line and parses it for TP2
     # if(len(signal) > 4):
@@ -104,7 +104,7 @@ def ParseSignal(signal: str) -> dict:
     # if(len(signal) > 5):
     #     trade['TP'].append(float(signal[5].split()[-1]))
 
-    trade['StopLoss'] = float((signal[6].split())[-1])
+    trade['StopLoss'] = float((signal[5].split())[-1])
     
     # adds risk factor to trade
     trade['RiskFactor'] = RISK_FACTOR
@@ -437,7 +437,7 @@ def welcome(update: Update, context: CallbackContext) -> None:
         context: CallbackContext object that stores commonly used objects in handler callbacks
     """
 
-    welcome_message = "Modificación para que no pregunte /trade Welcome to the FX Signal Copier Telegram Bot! 💻💸\n\nYou can use this bot to enter trades directly from Telegram and get a detailed look at your risk to reward ratio with profit, loss, and calculated lot size. You are able to change specific settings such as allowed symbols, risk factor, and more from your personalized Python script and environment variables.\n\nUse the /help command to view instructions and example trades."
+    welcome_message = "FX Capital"
     
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
